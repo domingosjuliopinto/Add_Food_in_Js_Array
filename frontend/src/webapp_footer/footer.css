@@ -1,0 +1,16 @@
+.Webapp_Footer {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Right side */
+.right {
+    align-self: flex-end;
+    margin-right: 1vw;
+}
+
+/* Left side */
+.left {
+    align-self: flex-start;
+    margin-left: 1vw;
+}
