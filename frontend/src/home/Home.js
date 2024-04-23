@@ -11,6 +11,15 @@ import Col from 'react-bootstrap/Col';
 import Title from 'antd/es/typography/Title';
 
 function Home(){
+    const handleLogout = async () => {
+        try {
+            localStorage.removeItem('firstLogin')
+            window.location.href = "/";
+        } catch (err) {
+            window.location.href = "/success";
+        }
+    }
+
     return(
         <div>
             <Layout>
@@ -19,7 +28,7 @@ function Home(){
                         <Row>
                             <Col style={{textAlign:'right'}}>
                                 <Button type="text">Home</Button>
-                                <Button type="text">Matrix</Button>
+                                <Button type="text" onClick={handleLogout}>Logout</Button>
                             </Col>
                             <Col xs={2} style={{textAlign:'center',borderLeft:"1px solid grey"}}>
                             <Space direction="vertical" size="1" style={{display: 'flex'}}>

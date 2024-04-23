@@ -3,7 +3,7 @@ const cors = require('cors')
 const cookieParser = require('cookie-parser')
 
 const app = express();
-const PORT = 3000;
+const PORT = 5000;
 
 // Single routing
 const router = express.Router();

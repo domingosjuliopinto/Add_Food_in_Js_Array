@@ -1,146 +1,183 @@
-import {
-    MDBBtn,
-    MDBContainer,
-    MDBRow,
-    MDBCol,
-    MDBCard,
-    MDBCardBody,
-    MDBInput,
-    MDBBtnGroup
-  }
-  from 'mdb-react-ui-kit';
-
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios'
-import { useState } from 'react';
 
-function Register(){
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [psd, setPsd] = useState('');
-    const [rpsd, setRpsd] = useState('');
-    const [nameErr, setNameErr] = useState('');
-    const [emailErr, setEmailErr] = useState('');
-    const [psdErr, setPsdErr] = useState('');
-    const [rpsdErr, setRpsdErr] = useState('');
-    const [fsM, setFsM] = useState('');
-    const [feM, setFeM] = useState('');
+import './register.css';
 
-    function onNameChange(e){
-      const re = /^[a-zA-Z]+[a-zA-Z ]*$/;
-      setName(e.target.value.trim())
-      if(e.target.value.trim() === ""){
-        setNameErr("Name shouldn't be empty")
-      }
-      else if(!re.test(e.target.value.trim())){
-        setNameErr("Name should have only Alphabets")
-      }else{
-        setNameErr("")
-      };
-      
+const {v4 : uuidv4} = require('uuid')
+
+const Register = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+  });
+  const [errors, setErrors] = useState({});
+  const [successMessage, setSuccessMessage] = useState('');
+
+  function onNameChange(e){
+    const re = /^[a-zA-Z]+[a-zA-Z ]*$/;
+    setFormData({...formData, name:e.target.value.trim()})
+    if(e.target.value.trim() === ""){
+      setErrors({...errors,name:"Name is required"})
     }
+    else if(!re.test(e.target.value.trim())){
+      setErrors({...errors,name:"Name should have only Alphabets"})
+    }else{
+      setErrors({...errors,name:""})
+    }  
+  }
 
-    function onEmailChange(e){
-      const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      setEmail(e.target.value.trim())
-      if(e.target.value.trim() === ""){
-        setEmailErr("Email shouldn't be empty")
-      }
-      else if(!re.test(e.target.value.trim())){
-        setEmailErr("Invalid Email")
-      }else{
-        setEmailErr("")
-      };
+  function onEmailChange(e){
+    const re = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    setFormData({...formData, email:e.target.value.trim()})
+    if(e.target.value.trim() === ""){
+      setErrors({...errors,email:"Email shouldn't be empty"})
     }
+    else if(!re.test(e.target.value.trim())){
+      setErrors({...errors,email:"Invalid Email"})
+    }else{
+      setErrors({...errors,email:""})
+    };
+  }
 
-    function onPsdChange(e){
-      const re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-      setPsd(e.target.value)
-      if(!re.test(e.target.value.trim())){
-        setPsdErr("Password doesn't match the condition")
-      }else{
-        setPsdErr("")
-      };
+  function onPsdChange(e){
+    const re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    setFormData({...formData, password:e.target.value})
+    if(!re.test(e.target.value.trim())){
+      setErrors({...errors,password:"Password doesn't match the condition"})
+    }else{
+      setErrors({...errors,password:""})
+    };
+  }
+
+  function onRpsdChange(e){
+    setFormData({...formData, confirmPassword:e.target.value})
+    if(formData.password !== e.target.value){
+      setErrors({...errors,confirmPassword:"Re-entered password doesn't match the typed password"})
+    }else{
+      setErrors({...errors,confirmPassword:""})
     }
+  }
 
-    function onRpsdChange(e){
-      setRpsd(e.target.value)
-      if(psd !== e.target.value){
-        setRpsdErr("Re-entered password doesn't match the typed password")
-      }else{
-        setRpsdErr("")
-      }
-    }
+  async function handleSubmit(e){
+    e.preventDefault();
+    const errors = validateForm(formData);
+    
+    if (Object.keys(errors).length === 0) {
+      const id = generateUniqueId();
+      const name = formData.name;
+      const email = formData.email;
+      const password = formData.password;
 
-    async function handleSubmit(){
-      if(nameErr===""&&emailErr===""&&psdErr===""&&rpsdErr===""&&rpsd!==""){
-        console.log(psd)
-        const password = psd
         try {
-          const res = await axios.post('http://localhost:3000/register', {
-              name, email, password
+          const res = await axios.post('http://localhost:5000/register', {
+              id, name, email, password
           })
-
-          setFsM(res.data.msg)
-    
+          setSuccessMessage(res.data.msg+`! Your ID is ${id}`);
+          setFormData({
+            name: '',
+            email: '',
+            password: '',
+            confirmPassword: '',
+          });
       } catch (err) {
-          err.response.data.msg && 
-          setFeM(err.response.data.msg)
+          setErrors({errors:err.response.data.msg});
+          setSuccessMessage("");
       }
-      }
+    } else {
+      setErrors(errors);
+      setSuccessMessage("");
     }
-  
-    return (
-        <div>
-        <MDBContainer fluid>
-    
-          <MDBRow className='d-flex justify-content-center align-items-center h-100'>
-            <MDBCol col='12'>
-    
-              <MDBCard className='bg-white my-5 mx-auto' style={{borderRadius: '1rem', maxWidth: '500px'}}>
-              
-                <MDBCardBody className='p-5 w-100 d-flex flex-column'>
-                  <MDBBtnGroup shadow='0' aria-label='Basic example' className="d-flex justify-content-evenly">
-                  <Link to="/login">
-                    <MDBBtn color='secondary' outline>
-                      Login
-                    </MDBBtn>
-                  </Link>
-                  <Link to="/register">
-                    <MDBBtn color='secondary' outline>
-                      Register
-                    </MDBBtn>
-                  </Link>
-                  </MDBBtnGroup>
-                  <br></br>
-    
-                  <h2 className="fw-bold mb-2 text-center">Sign up</h2>
-                  <p className="text-danger mb-3">{feM}</p>
-                  <p className="text-success mb-3">{fsM}</p>
-    
-                  <MDBInput wrapperClass='mb-4 w-100' label='Full Name' id='formControlLg' type='text' size="lg" onChange={onNameChange} value={name} />
-                  <p className="text-danger mb-3">{nameErr}</p>
-                  <MDBInput wrapperClass='mb-4 w-100' label='Email address' id='formControlLg' type='email' size="lg" onChange={onEmailChange} value={email} />
-                  <p className="text-danger mb-3">{emailErr}</p>
-                  <MDBInput wrapperClass='mb-4 w-100' label='Password' id='formControlLg' type='password' size="lg" onChange={onPsdChange} value={psd} />
-                  <p className="text-danger mb-3">{psdErr}</p>
-                  <MDBInput wrapperClass='mb-4 w-100' label='Repeat Password' id='formControlLg' type='password' size="lg" onChange={onRpsdChange} value={rpsd} />
-                  <p className="text-danger mb-3">{rpsdErr}</p>
-  
-    
-                  <MDBBtn size='lg' onClick={handleSubmit}>
-                    Register
-                  </MDBBtn>
-    
-                </MDBCardBody>
-              </MDBCard>
-    
-            </MDBCol>
-          </MDBRow>
-    
-        </MDBContainer>
-      </div>
-      );
-}
+  };
 
-export default Register
+  const validateForm = (formData) => {
+    const re1 = /^[a-zA-Z]+[a-zA-Z ]*$/;
+    const re2 = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    const errors = {};
+    if (!formData.name.trim()) {
+      errors.name = 'Name is required';
+    }
+    else if(!re1.test(formData.name.trim())){
+      errors.name ="Name should have only Alphabets";
+    }
+    
+    if (!formData.email.trim()) {
+      errors.email = 'Email is required';
+    } else if (!/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(formData.email)) {
+      errors.email = 'Email is invalid';
+    }
+    if(!re2.test(formData.password)){
+      errors.password ="Password doesn't match the condition";
+    }
+    
+    if (formData.confirmPassword !== formData.password) {
+      errors.confirmPassword = 'Passwords do not match';
+    }
+    return errors;
+  };
+
+  const generateUniqueId = () => {
+    const userId = uuidv4()
+    return userId;
+  };
+
+  return (
+    <div className='center_it'>
+    <div className='register-container'>
+    <div className='Webapp_Div'>
+      <div className='left'><Link to="/login"><button>Login</button></Link></div>
+      <div className='right'><Link to="/register"><button>Register</button></Link></div>
+    </div>
+      <h2>Registration</h2>
+      {successMessage && <p className='success-message'>{successMessage}</p>}
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label>Name:</label><br/>
+          <input
+            type="text"
+            name="name"
+            value={formData.name}
+            onChange={onNameChange}
+          />
+          {errors.name && <p className='error-message'>{errors.name}</p>}
+        </div>
+        <div>
+          <label>Email:</label><br/>
+          <input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={onEmailChange}
+          />
+          {errors.email && <p className='error-message'>{errors.email}</p>}
+        </div>
+        <div>
+          <label>Password:</label><br/>
+          <input
+            type="password"
+            name="password"
+            value={formData.password}
+            onChange={onPsdChange}
+          />
+          {errors.password && <p className='error-message'>{errors.password}</p>}
+        </div>
+        <div>
+          <label>Confirm Password:</label><br/>
+          <input
+            type="password"
+            name="confirmPassword"
+            value={formData.confirmPassword}
+            onChange={onRpsdChange}
+          />
+          {errors.confirmPassword && <p className='error-message'>{errors.confirmPassword}</p>}
+        </div>
+        <button type="submit">Register</button>
+      </form>
+    </div>
+    </div>
+  );
+};
+
+export default Register;

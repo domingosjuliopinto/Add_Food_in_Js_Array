@@ -6,9 +6,9 @@ const registeredEmails = []
 const controller = {
     register : async(req,res)=>{
         try{
-            const {name, email, password} = req.body
+            const {id, name, email, password} = req.body
 
-            if(!name || !email || !password)
+            if(!name || !email || !password || !id)
                 return res.status(400).json({msg: "Please fill in all fields."})
 
             if(!validateEmail(email))
@@ -24,7 +24,7 @@ const controller = {
              const nameTrim = name.trim()
 
             const newStudent = {
-                name:nameTrim, email:email, password: passwordHash
+                id:id, name:nameTrim, email:email, password: passwordHash
             }
 
             registeredNames.push(newStudent)

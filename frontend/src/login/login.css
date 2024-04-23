@@ -1,0 +1,90 @@
+/* LoginPage.css */
+
+.center_it{
+    min-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-container {
+    width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    color: #000000;
+  }
+  
+  .login-container h2 {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .login-container .error-message {
+    color: red;
+    margin-bottom: 10px;
+  }
+
+  .login-container .success-message {
+    color: green;
+    margin-bottom: 10px;
+  }
+  
+  .login-container form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .login-container form label {
+    margin-bottom: 10px;
+  }
+  
+  .login-container form input {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+  }
+  
+  .login-container form button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .login-container button {
+    padding: 10px 20px;
+    color: #007bff;
+    background-color: #fff;
+    border: 2px solid #007bff;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .login-container form button:hover {
+    background-color: #0056b3;
+  }
+  
+  .Webapp_Div {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Right side */
+.right {
+    align-self: flex-end;
+    margin-right: 1vw;
+}
+
+/* Left side */
+.left {
+    align-self: flex-start;
+    margin-left: 1vw;
+}
