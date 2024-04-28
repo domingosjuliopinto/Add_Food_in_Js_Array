@@ -1,58 +1,71 @@
 import './Home.css'
+import '../webapp_footer/footer.css'
 
-import { Button, Layout, Space } from 'antd';
-import { Content, Header } from 'antd/es/layout/layout';
+import HeadNav from '../reusable/header/HeadNav'
 
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-
-//import { Link } from 'react-router-dom';
-import Title from 'antd/es/typography/Title';
+import { useState } from 'react'
+import axios from 'axios'
+import { Link } from 'react-router-dom'
 
 function Home(){
-    const handleLogout = async () => {
-        try {
-            localStorage.removeItem('firstLogin')
-            window.location.href = "/";
-        } catch (err) {
-            window.location.href = "/success";
-        }
+
+    const [fooditems,setfooditems] = useState([]) 
+
+    async function getfood(){
+        const res = await axios.get('http://localhost:5000/fooditems')
+        return res.data
     }
+
+    async function setfood(){
+        if(fooditems.length===0){
+        const res = await getfood()
+        setfooditems(res)
+    }
+    }
+
+    setTimeout(setfood,100)
 
     return(
         <div>
-            <Layout>
-                <Header style={{backgroundColor:'white'}}>
-                    <Container fluid>
-                        <Row>
-                            <Col style={{textAlign:'right'}}>
-                                <Button type="text">Home</Button>
-                                <Button type="text" onClick={handleLogout}>Logout</Button>
-                            </Col>
-                            <Col xs={2} style={{textAlign:'center',borderLeft:"1px solid grey"}}>
-                            <Space direction="vertical" size="1" style={{display: 'flex'}}>
-                                <Title level={5}><b>Name</b></Title>
-                                <Title level={5}>ID</Title>
-                            </Space>
-                            </Col>
-                        </Row>
-                    </Container>
-                </Header>
-                <Content style={{height:"91.5vh"}}>
-                <div
-                style={{
-                    backgroundColor: "white",
-                    minHeight: 280,
-                    padding: 24,
-                    margin:24,
-                    borderRadius: 5,
-                }}
-                >
-                Content
+            <HeadNav/>
+            <div className='mainbody'>
+                <div className='maincontainer'>
+                    <div className='incontainer'>
+                        <div className='Webapp_Footer'>
+                            <div className='left'>
+                                <h1>Food Details</h1>
+                            </div>
+                            <div className='right' style={{marginBottom:"10px"}}>
+                                <input className='Homeright' style={{marginRight:"5px"}} type='text'/>
+                                <Link to="/addfood"><button className='Homeright'>+ Add Food</button></Link>
+                            </div>
+                        </div>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <th>Item</th>
+                                    <th>Food ID</th>
+                                    <th>Quantity</th>
+                                    <th>Food Genre</th>
+                                    <th>Action</th>
+                                </tr>
+                                {fooditems.map((fitem) => 
+                                    <tr key={fitem.foodId}>
+                                    <td>{fitem.item}</td>
+                                    <td>{fitem.foodId}</td>
+                                    <td>{fitem.quantity}</td>
+                                    <td>{fitem.foodGenre}</td>
+                                    <td>
+                                        <i className="fa-solid fa-eye"></i>
+                                        <i style={{marginLeft:'5%'}} className="fa-solid fa-pen-to-square"></i>
+                                    </td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>   
+                    </div>
                 </div>
-                </Content>
-            </Layout>
+            </div>   
         </div>
     )
 }

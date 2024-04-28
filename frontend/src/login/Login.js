@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import axios from 'axios'
 
+import Logreg from '../reusable/logreg/Logreg';
 import './login.css';
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const [fsM, setFsM] = useState('');
 
   function onEmailChange(e){
     const re = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -34,13 +33,12 @@ function Login() {
 
     try {
       const res = await axios.post('http://localhost:5000/login', {email, password})
-      setFsM(res.data.msg)
       localStorage.setItem('firstLogin', true)
-     
+      localStorage.setItem('name',res.data.name)
+      localStorage.setItem('id',res.data.id)
       setEmail('');
       setPassword('');
       setErrorMessage('');
-      setFsM('')
 
 
       window.location.href = "/home";
@@ -54,12 +52,8 @@ function Login() {
   return (
     <div className='center_it'>
     <div className='login-container'>
-    <div className='Webapp_Div'>
-      <div className='left'><Link to="/login"><button>Login</button></Link></div>
-      <div className='right'><Link to="/register"><button>Register</button></Link></div>
-    </div>
+      <Logreg/>
       <h2>Login</h2>
-      {fsM && <p className='success-message'>{fsM}</p>}
       {errorMessage && <p className='error-message'>{errorMessage}</p>}
       <form onSubmit={handleLogin}>
         <label>Email:</label>

@@ -1,13 +1,3 @@
-/* LoginPage.css */
-
-.center_it{
-    min-height: 90vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
 .login-container {
     width: 400px;
     margin: 0 auto;
@@ -27,11 +17,6 @@
     color: red;
     margin-bottom: 10px;
   }
-
-  .login-container .success-message {
-    color: green;
-    margin-bottom: 10px;
-  }
   
   .login-container form {
     display: flex;
@@ -47,7 +32,7 @@
     margin-bottom: 15px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    width: 100%;
+    width: 95%;
   }
   
   .login-container form button {
@@ -72,19 +57,3 @@
     background-color: #0056b3;
   }
   
-  .Webapp_Div {
-    display: flex;
-    justify-content: space-between;
-}
-
-/* Right side */
-.right {
-    align-self: flex-end;
-    margin-right: 1vw;
-}
-
-/* Left side */
-.left {
-    align-self: flex-start;
-    margin-left: 1vw;
-}

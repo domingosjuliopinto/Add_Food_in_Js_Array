@@ -1,13 +1,3 @@
-/* RegisterPage.css */
-
-.center_it{
-    min-height: 90vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
 .register-container {
     width: 400px;
     margin: 0 auto;
@@ -47,7 +37,7 @@
     margin-bottom: 15px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    width: 100%;
+    width: 95%;
   }
   
   .register-container form button {

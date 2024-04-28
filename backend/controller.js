@@ -2,6 +2,32 @@ const bcrypt = require('bcrypt')
 
 const registeredNames = []
 const registeredEmails = []
+const fooditems = [
+    {
+        item:"Chocolate",
+        foodId:"1",
+        quantity:"3",
+        foodGenre:"Dessert"
+    },
+    {
+        item:"Pineapple",
+        foodId:"2",
+        quantity:"3",
+        foodGenre:"Fruits"
+    },
+    {
+        item:"Medu Vada",
+        foodId:"3",
+        quantity:"5",
+        foodGenre:"Breakfast"
+    },
+    {
+        item:"Idli",
+        foodId:"4",
+        quantity:"5",
+        foodGenre:"Breakfast"
+    }
+]
 
 const controller = {
     register : async(req,res)=>{
@@ -49,10 +75,37 @@ const controller = {
                     if(!isMatch){
                         return res.status(400).json({msg: "This email or password is incorrect."})
                     }else{
-                        return res.status(200).json({msg: "Login success!"})
+                        return res.status(200).json({"name":registeredNames[i].name,"id":registeredNames[i].id})
                     }
                 }
             }
+
+        } catch (err) {
+            return res.status(500).json({msg: err.message})
+        }
+    },
+    getfooditem:async (req, res) => {
+        try {
+            return res.status(200).json(fooditems)
+        } catch (err) {
+            return res.status(500).json({msg: err.message})
+        }
+    },
+    addfooditem: async (req, res) => {
+        try {
+            const {item,quantity,foodGenre} = req.body
+            if (!item.trim() || !quantity || !foodGenre) {
+                return res.status(500).json({msg: 'Please fill in all fields'});
+            }
+            const foodId = fooditems.length+1
+            
+            const newfood = {item:item.trim(),
+            foodId:foodId,
+            quantity:quantity,
+            foodGenre:foodGenre}
+            fooditems.push(newfood)
+
+            return res.status(200).json({msg: "Food item added successfully"})
 
         } catch (err) {
             return res.status(500).json({msg: err.message})

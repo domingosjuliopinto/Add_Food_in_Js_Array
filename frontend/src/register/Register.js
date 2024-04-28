@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import axios from 'axios'
 
+import Logreg from '../reusable/logreg/Logreg';
 import './register.css';
 
 const {v4 : uuidv4} = require('uuid')
@@ -64,7 +64,7 @@ const Register = () => {
   async function handleSubmit(e){
     e.preventDefault();
     const errors = validateForm(formData);
-    
+
     if (Object.keys(errors).length === 0) {
       const id = generateUniqueId();
       const name = formData.name;
@@ -126,10 +126,7 @@ const Register = () => {
   return (
     <div className='center_it'>
     <div className='register-container'>
-    <div className='Webapp_Div'>
-      <div className='left'><Link to="/login"><button>Login</button></Link></div>
-      <div className='right'><Link to="/register"><button>Register</button></Link></div>
-    </div>
+      <Logreg/>
       <h2>Registration</h2>
       {successMessage && <p className='success-message'>{successMessage}</p>}
       <form onSubmit={handleSubmit}>

@@ -14,8 +14,11 @@ code {
     monospace;
 }
 
-/*Bootstrap*/
-@import url("../node_modules/bootstrap/dist/css/bootstrap.min.css");
+button{
+  cursor: pointer;
+}
+
+/*Icon*/
 @import url("../node_modules/@fortawesome/fontawesome-free/css/all.min.css");
 
 

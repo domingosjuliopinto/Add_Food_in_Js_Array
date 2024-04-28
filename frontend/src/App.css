@@ -18,7 +18,11 @@
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.center_it{
+  min-height: 95vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 

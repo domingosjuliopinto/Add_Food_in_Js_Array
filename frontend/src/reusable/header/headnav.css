@@ -1,0 +1,23 @@
+.Navbar_Div {
+    display: flex;
+    height: 65px;
+    border-bottom: 1px solid grey;
+}
+
+.leftn{
+    width: 81%;
+    text-align: right;
+}
+
+.leftn button{
+    color: white;
+    background-color: transparent;
+    height: 100%;
+    margin-right: 14px;
+}
+
+.rightn{
+    width: 18%;
+    text-align: center;
+    border-left: 1px solid grey;
+}
