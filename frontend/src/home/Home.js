@@ -36,7 +36,6 @@ function Home(){
                                 <h1>Food Details</h1>
                             </div>
                             <div className='right' style={{marginBottom:"10px"}}>
-                                <input className='Homeright' style={{marginRight:"5px"}} type='text'/>
                                 <Link to="/addfood"><button className='Homeright'>+ Add Food</button></Link>
                             </div>
                         </div>
