@@ -46,7 +46,6 @@ function Home(){
                                     <th>Food ID</th>
                                     <th>Quantity</th>
                                     <th>Food Genre</th>
-                                    <th>Action</th>
                                 </tr>
                                 {fooditems.map((fitem) => 
                                     <tr key={fitem.foodId}>
@@ -54,10 +53,6 @@ function Home(){
                                     <td>{fitem.foodId}</td>
                                     <td>{fitem.quantity}</td>
                                     <td>{fitem.foodGenre}</td>
-                                    <td>
-                                        <i className="fa-solid fa-eye"></i>
-                                        <i style={{marginLeft:'5%'}} className="fa-solid fa-pen-to-square"></i>
-                                    </td>
                                     </tr>
                                 )}
                             </tbody>
